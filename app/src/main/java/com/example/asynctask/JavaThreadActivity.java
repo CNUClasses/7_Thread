@@ -100,7 +100,7 @@ public class JavaThreadActivity extends Activity {
     //try to cancel thread
     public void doStop(View v) {
         setButtonState(false);
-        textViewMessage.setText("Stopping...");
+        textViewMessage.setText("Canceled");
         pBar.setProgress(0);
 
         myUpdateTask.cancel(true);
@@ -114,7 +114,7 @@ public class JavaThreadActivity extends Activity {
         }
     }
 
-    
+
     private static class UpdateTask1 extends Thread{
         private static final String TAG = "UpdateTask1";
         int progress = 1;
@@ -147,16 +147,16 @@ public class JavaThreadActivity extends Activity {
         }
 
         public void run() {
-            for (int i = 1; i <= 10; i++) {
+            for (int i = 1; i <= 100; i++) {
                 //simulate some work sleep for .5 seconds
-                SystemClock.sleep(500);
+                SystemClock.sleep(100);
 
                 //let main thread know we are busy
                 if (activity != null)
                     activity.runOnUiThread(new Runnable() {
                     public void run() {
                         //indicate how far we have gone
-                        progress+=10;
+                        progress+=1;
                         activity.pBar.setProgress(progress);
                     }
                 });

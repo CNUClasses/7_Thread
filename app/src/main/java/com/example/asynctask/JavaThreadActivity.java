@@ -1,7 +1,6 @@
 package com.example.asynctask;
 
 import android.app.Activity;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.util.Log;
@@ -11,9 +10,9 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-public class AsyncTaskActivity extends Activity {
+public class JavaThreadActivity extends Activity {
 
-    private static final String TAG = "AsyncTaskActivity";
+    private static final String TAG = "JavaThreadActivity";
     private static final int P_BAR_MAX = 100;
     Button bStart;
     Button bStop;
@@ -118,10 +117,10 @@ public class AsyncTaskActivity extends Activity {
     private static class UpdateTask1 extends Thread{
         private static final String TAG = "UpdateTask1";
         int progress = 1;
-        private AsyncTaskActivity activity = null;
+        private JavaThreadActivity activity = null;
         private boolean isCancelled=false;
 
-        public UpdateTask1(AsyncTaskActivity activity) {
+        public UpdateTask1(JavaThreadActivity activity) {
             attach(activity);
         }
 
@@ -139,7 +138,7 @@ public class AsyncTaskActivity extends Activity {
 
 
         // grab a reference to this activity, mindful of leaks
-        void attach(AsyncTaskActivity activity) {
+        void attach(JavaThreadActivity activity) {
             if (activity == null)
                 throw new IllegalArgumentException("Activity cannot be null");
 
@@ -181,105 +180,11 @@ public class AsyncTaskActivity extends Activity {
                 activity.runOnUiThread(new Runnable() {
                     public void run() {
                         //indicate how far we have gone
-                        progress+=10;
+//                        progress+=10;
                         activity.doStop(null);
                     }
                 });
         }
     }
-    //****************************************
-    //notice I only define what will be returned to
-    //onCanceled or onPostExecute
-    //notice also that this is static, so it does not hold an implicit reference to enclosing
-    //activity, rotate the phone and activity is GCed
-//    private static class UpdateTask extends AsyncTask<Void, Integer, String> {
-//        private static final String TAG = "UpdateTask";
-//        int progress = 1;
-//        private AsyncTaskActivity activity = null;
-//
-//        // ===========================================
-//        // important do not hold a reference so garbage collector can grab old
-//        // defunct dying activity
-//        void detach() {
-//            activity = null;
-//            Log.d(TAG, "DETACHING");
-//        }
-//
-//        public UpdateTask(AsyncTaskActivity activity) {
-//            attach(activity);
-//            Log.d(TAG, "          ATACHING");
-//        }
-//
-//        // grab a reference to this activity, mindful of leaks
-//        void attach(AsyncTaskActivity activity) {
-//            if (activity == null)
-//                throw new IllegalArgumentException("Activity cannot be null");
-//
-//            this.activity = activity;
-//        }
-//
-//        @Override
-//        protected void onPreExecute() {
-//            // TODO Auto-generated method stub
-//            super.onPreExecute();
-//            //do whatever setup you need here
-//        }
-//
-//        /**
-//         * this is done in a new thread
-//         */
-//        @Override
-//        protected String doInBackground(Void... params) {
-//            for (int i = 1; i <= 10; i++) {
-//                //simulate some work sleep for .5 seconds
-//                SystemClock.sleep(500);
-//
-//                //let main thread know we are busy
-//                //notice that we are autoboxing int to Integer
-//                publishProgress(i);
-//
-//                //periodically check if the user canceled
-//                if (isCancelled())
-//                    return ("Canceled");
-//            }
-//            return "Finished";
-//        }
-//
-//        /**
-//         * the following run on UI thread
-//         */
-//        @Override
-//        protected void onProgressUpdate(Integer... value) {
-//            super.onProgressUpdate(value);
-//
-//            //indicate how far we have gone
-//            progress = value[0] * 10;
-//            activity.pBar.setProgress(progress);
-//        }
-//
-//        @Override
-//        protected void onPostExecute(String result) {
-//            super.onPostExecute(result);
-//
-//            try {
-//                activity.textViewMessage.setText(result);
-//                activity.setButtonState(false);
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
-//        }
-//
-//        @Override
-//        protected void onCancelled(String result) {
-//            super.onCancelled(result);
-//
-//            try {
-//                activity.textViewMessage.setText(result);
-//                activity.setButtonState(false);
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
-//        }
-//    }
 
 }

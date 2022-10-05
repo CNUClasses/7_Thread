@@ -114,6 +114,7 @@ public class JavaThreadActivity extends Activity {
         }
     }
 
+    
     private static class UpdateTask1 extends Thread{
         private static final String TAG = "UpdateTask1";
         int progress = 1;
